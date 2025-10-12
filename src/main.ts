@@ -24,6 +24,16 @@ document.body.appendChild(myText);
 
 //Button click event
 myButton.onclick = () => {
+  IncrementRedBall();
+};
+
+//Step 3
+
+//Helper function for clicking redball
+function IncrementRedBall(): void {
   redBallClicks++;
   myText.textContent = `Red balls: ${redBallClicks}`;
-};
+}
+
+//SetInterval
+setInterval(IncrementRedBall, 1000);
