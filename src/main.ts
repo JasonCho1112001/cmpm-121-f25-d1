@@ -18,6 +18,7 @@ myButton.textContent = "🔴";
 let redBallClicks: number = 0;
 
 //Text element to show number of clicks
+let size: number = 16;
 const myText = document.createElement("p");
 myText.textContent = `Red balls: ${redBallClicks}`;
 document.body.appendChild(myText);
@@ -37,3 +38,24 @@ function IncrementRedBall(): void {
 
 //SetInterval
 setInterval(IncrementRedBall, 1000);
+
+//Step 4
+requestAnimationFrame(animate);
+
+function animate() {
+  AdjustFontSize();
+  requestAnimationFrame(animate);
+}
+
+//Helper function for adjusting font size
+function AdjustFontSize(): void {
+  const currentFontSize = size;
+  const targetFontSize = 16 + redBallClicks;
+  const difference = targetFontSize - currentFontSize;
+
+  if (currentFontSize < targetFontSize) {
+    size += difference * 0.1;
+  }
+
+  myText.style.fontSize = `${size}px`;
+}
