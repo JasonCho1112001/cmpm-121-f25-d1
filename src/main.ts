@@ -60,7 +60,7 @@ upgradeTimesText.textContent = `__Upgrades__`;
 
 //Upgrade text elements
 const upgrades: HTMLButtonElement[] = [];
-const upgradeTimes: number[] = [0, 0, 0];
+const upgradeTimes: number[] = [0, 0, 0, 0, 0];
 const upgradeTexts: HTMLParagraphElement[] = [];
 
 //Replace the upgrade consts with an interface
@@ -68,16 +68,45 @@ interface Item {
   name: string;
   cost: number;
   rate: number;
+  description: string;
 }
 
 const availableItems: Item[] = [
-  { name: "Clowns", cost: 10, rate: 0.1 },
-  { name: "Ball Pits", cost: 100, rate: 2 },
-  { name: "Ball Factory", cost: 1000, rate: 50 },
+  {
+    name: "Clowns",
+    cost: 10,
+    rate: 0.1,
+    description: "A clown procures the occaisonal red ball",
+  },
+  {
+    name: "Ball Thrower",
+    cost: 50,
+    rate: 0.5,
+    description: "Ball Throwers always keep a basket full of balls near them",
+  },
+  {
+    name: "Ball Pits",
+    cost: 100,
+    rate: 2,
+    description: "Ball Pit. Enough said.",
+  },
+  {
+    name: "Ball Factory",
+    cost: 1000,
+    rate: 50,
+    description: "Ball Factories produce all the balls in the world",
+  },
+  {
+    name: "Ball Cascade",
+    cost: 50000,
+    rate: 500,
+    description:
+      "You've got so many balls, you can some how make a waterfall of them.",
+  },
 ];
 
 //Three upgrade texts
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < availableItems.length; i++) {
   upgradeTexts[i] = document.createElement("p");
   document.body.appendChild(upgradeTexts[i]);
   upgradeTexts[i].textContent = `${availableItems[i].name}: ${
