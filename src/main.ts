@@ -22,19 +22,6 @@ myButton.onclick = () => {
   IncrementRedBall();
 };
 
-//Step 3
-
-//Helper function for clicking redball
-function IncrementRedBall(): void {
-  redBallClicks++;
-  myText.textContent = `Red balls: ${redBallClicks}`;
-
-  //Enable upgrade button
-  if (redBallClicks >= upgradeCost) {
-    upgradeButton.disabled = false;
-  }
-}
-
 //SetInterval
 let delay = 0;
 //setInterval(IncrementRedBall, delay);
@@ -59,28 +46,90 @@ function AdjustFontSize(): void {
 }
 
 //Step 5
+let growthRate: number = 0;
 
-//Create the button
-let upgradeCost = 10;
-const upgradeButton = document.createElement("button");
-document.body.appendChild(document.createElement("br"));
-document.body.appendChild(document.createElement("br"));
-document.body.appendChild(upgradeButton);
-upgradeButton.textContent = `Upgrade automatic clicking (Cost: ${upgradeCost})`;
+//growthRate text
+const growthText = document.createElement("p");
+document.body.appendChild(growthText);
+growthText.textContent = `Growth Rate: ${growthRate} balls/sec`;
 
-//Disable the button
-upgradeButton.disabled = true;
+//upgradeTimes text
+const upgradeTimesText = document.createElement("p");
+document.body.appendChild(upgradeTimesText);
+upgradeTimesText.textContent = `__Upgrades__`;
 
-upgradeButton.onclick = () => {
-  if (redBallClicks >= upgradeCost) {
-    redBallClicks -= upgradeCost;
-    delay = Math.max(100, delay - 100); // Decrease delay but not below 100ms
-    setInterval(IncrementRedBall, delay);
+//Three upgrade texts
+const upgradeTexts: HTMLParagraphElement[] = [];
+for (let i = 0; i < 3; i++) {
+  upgradeTexts[i] = document.createElement("p");
+  document.body.appendChild(upgradeTexts[i]);
+  upgradeTexts[i].textContent = `Upgrade ${i + 1} Times: 0`;
+}
 
-    upgradeCost *= 2;
-    upgradeButton.textContent =
-      `Upgrade automatic clicking (Cost: ${upgradeCost})`;
-  }
-};
+//Upgrade bonanza
+let upgrades: HTMLButtonElement[] = [];
+let upgradeCosts: number[] = [10, 100, 1000];
+let upgradeTimes: number[] = [0, 0, 0];
+let upgradeValues: number[] = [0.1, 2.0, 50.0];
+
+//Create the upgrade button three times
+for (let i = 0; i < 3; i++) {
+  upgrades[i] = document.createElement("button");
+  document.body.appendChild(document.createElement("br"));
+  document.body.appendChild(document.createElement("br"));
+  document.body.appendChild(upgrades[i]);
+  upgradeCosts[i] = Math.pow(10, i) * 10; //10, 100, 1000
+  upgrades[i].textContent = `+${upgradeValues[i]} balls/sec (Cost: ${
+    upgradeCosts[i]
+  })`;
+
+  //Disable the button
+  upgrades[i].disabled = true;
+
+  upgrades[i].onclick = () => {
+    if (redBallClicks >= upgradeCosts[i]) {
+      redBallClicks -= upgradeCosts[i];
+
+      growthRate += upgradeValues[i];
+      delay = 1000 / growthRate;
+
+      setInterval(IncrementRedBall, delay);
+
+      upgradeTimes[i] = (upgradeTimes[i] || 0) + 1;
+      upgradeCosts[i] *= 2;
+      upgrades[i].textContent = `+${upgradeValues[i]} balls/sec (Cost: ${
+        upgradeCosts[i]
+      })`;
+      growthText.textContent = `Growth Rate: ${1 / (delay * 0.001)} balls/sec`;
+      UpdateUpgradeTimesText();
+
+      if (redBallClicks < upgradeCosts[i]) {
+        upgrades[i].disabled = true;
+      }
+    }
+  };
+}
 
 document.body.appendChild(myText);
+
+//Helper functions
+
+//Clicking redball
+function IncrementRedBall(): void {
+  redBallClicks++;
+  myText.textContent = `Red balls: ${redBallClicks}`;
+
+  //Enable upgrade buttons
+  for (let i = 0; i < upgrades.length; i++) {
+    if (redBallClicks >= upgradeCosts[i]) {
+      upgrades[i].disabled = false;
+    }
+  }
+}
+
+//Helper function for Update upgrade times text
+function UpdateUpgradeTimesText(): void {
+  for (let i = 0; i < upgradeTimes.length; i++) {
+    upgradeTexts[i].textContent = `Upgrade ${i + 1} Times: ${upgradeTimes[i]}`;
+  }
+}
