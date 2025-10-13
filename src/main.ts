@@ -22,7 +22,7 @@ myButton.onclick = () => {
   IncrementRedBall();
 };
 
-//SetInterval
+//SetIntervals
 let delay = 0;
 //setInterval(IncrementRedBall, delay);
 
@@ -67,10 +67,10 @@ for (let i = 0; i < 3; i++) {
 }
 
 //Upgrade bonanza
-let upgrades: HTMLButtonElement[] = [];
-let upgradeCosts: number[] = [10, 100, 1000];
-let upgradeTimes: number[] = [0, 0, 0];
-let upgradeValues: number[] = [0.1, 2.0, 50.0];
+const upgrades: HTMLButtonElement[] = [];
+const upgradeCosts: number[] = [10, 100, 1000];
+const upgradeTimes: number[] = [0, 0, 0];
+const upgradeValues: number[] = [0.1, 2.0, 50.0];
 
 //Create the upgrade button three times
 for (let i = 0; i < 3; i++) {
@@ -96,7 +96,7 @@ for (let i = 0; i < 3; i++) {
       setInterval(IncrementRedBall, delay);
 
       upgradeTimes[i] = (upgradeTimes[i] || 0) + 1;
-      upgradeCosts[i] *= 2;
+      upgradeCosts[i] *= 1.15;
       upgrades[i].textContent = `+${upgradeValues[i]} balls/sec (Cost: ${
         upgradeCosts[i]
       })`;
