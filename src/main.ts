@@ -76,6 +76,7 @@ myButton.onclick = () => {
 };
 
 // Create a bouncing/fading ball visual
+// CREDIT FOR FUN ANIMATION WHEN CLICKING: <https://t4ylo.github.io/cmpm-121-25-d1-taylorpearce/>
 function spawnBouncingBall() {
   const el = document.createElement("div");
   el.className = "flying-ball";
